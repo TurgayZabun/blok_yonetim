@@ -6,7 +6,7 @@ part 'blok.g.dart';
 @HiveType(typeId: 0)
 class Blok extends HiveObject {
   @HiveField(0)
-  String? _blokAdi;
+  late final String? _blokAdi;
   @HiveField(1)
   HiveList? daireler;
 
@@ -34,13 +34,13 @@ class Daire extends HiveObject {
       required this.bulunduguKat,
       required this.bulunduguBlok});
 
-  void addDaire(Daire daire) {
+  void addFlat(Daire daire) {
     var box = Hive.box(Constants.boxBlok);
     //TODO: aynı daire numarası daha önce var mı kontrol etmek gerekebilir.
     box.put(daire.daireNo.toString(), daire);
   }
 
-  Daire getDaire(int daireNo) {
+  Daire getFlat(int daireNo) {
     var box = Hive.box(Constants.boxBlok);
     return box.get(daireNo.toString()) as Daire;
   }

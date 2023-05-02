@@ -2,7 +2,6 @@ import 'package:blok_yonetim/blok.dart';
 import 'package:blok_yonetim/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../main.dart';
 
 class EditHouse extends StatefulWidget {
   final int daireNo;

@@ -67,7 +67,7 @@ class _AddHouseState extends State<AddHouse> {
                         var daire = Daire(
                             daireNo: int.parse(daireNo.text),
                             bulunduguKat: int.parse(katNo.text),
-                            bulunduguBlok: mcont.blokAdi.string);
+                            bulunduguBlok: mcont.blokAdiRx.string);
                         //daire.addDaire(daire);
                         mcont.addHouse(daire);
                         Get.back();

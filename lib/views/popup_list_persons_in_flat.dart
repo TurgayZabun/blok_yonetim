@@ -42,6 +42,11 @@ class PopListPersonsInFlat extends StatelessWidget {
                     const Divider(),
               ),
       ),
+      ElevatedButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text('Kapat'))
     ]);
   }
 }
@@ -74,7 +79,6 @@ class _NewWidgetState extends State<NewWidget> {
       child: ListTile(
         title: Text('${widget.bireyler[widget.index].adi} '
             '${widget.bireyler[widget.index].soyadi}'),
-        //TODO: durum bilgisi seçim değitikçe değişecek
         subtitle: Obx(() =>
             Text(widget.mcont.getStatus(widget.bireyler[widget.index].key))),
         trailing: PopupMenuButton(

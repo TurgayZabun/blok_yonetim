@@ -1,18 +1,15 @@
 import 'package:blok_yonetim/main_controller.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'flat_widget.dart';
 
 class FloorWidget extends StatelessWidget {
   final int floor;
-
-  const FloorWidget({super.key, required this.floor});
+  final MainController mcont = Get.find();
+  FloorWidget({super.key, required this.floor});
 
   @override
   Widget build(BuildContext context) {
-    MainController mcont = Get.find();
-
     List<int> daireNumaralari = <int>[];
 
     mcont.daireler.where((p0) => p0.bulunduguKat == floor).forEach((element) {

@@ -5,13 +5,12 @@ import 'package:get/get.dart';
 
 class FlatWidget extends StatelessWidget {
   final String keyHouse;
+  final MainController mcont = Get.find();
 
-  const FlatWidget({super.key, required this.keyHouse});
+  FlatWidget({super.key, required this.keyHouse});
 
   @override
   Widget build(BuildContext context) {
-    MainController mcont = Get.find();
-
     return Expanded(
       child: InkWell(
         child: Container(
@@ -28,19 +27,34 @@ class FlatWidget extends StatelessWidget {
                     '${mcont.getHouse(keyHouse).bulunduguBlok} ${mcont.getHouse(keyHouse).daireNo.toString()}')
               ],
             ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(mcont
-                        .livingInFlat(mcont.getHouse(keyHouse).daireNo)
-                        .toString())
-                  ],
-                ),
-                Row(
-                  children: const [Text('0')],
-                ),
-              ],
+            Obx(
+              () => Column(
+                children: [
+                  Text(mcont
+                      .livingInFlat(mcont.getHouse(keyHouse).daireNo)
+                      .toString()),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: mcont.livingInFlat(
+                                  mcont.getHouse(keyHouse).daireNo) ==
+                              mcont.safePersonInFlat(
+                                  mcont.getHouse(keyHouse).daireNo)
+                          ? Colors.transparent
+                          : Colors.red,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    // color:
+                    //     mcont.livingInFlat(mcont.getHouse(keyHouse).daireNo) ==
+                    //             mcont.safePersonInFlat(
+                    //                 mcont.getHouse(keyHouse).daireNo)
+                    //         ? Colors.transparent
+                    //         : Colors.red,
+                    child: Text(mcont
+                        .safePersonInFlat(mcont.getHouse(keyHouse).daireNo)
+                        .toString()),
+                  ),
+                ],
+              ),
             )
           ]),
         ),

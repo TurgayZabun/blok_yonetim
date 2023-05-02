@@ -1,41 +1,41 @@
 import 'package:blok_yonetim/blok.dart';
 import 'package:blok_yonetim/views/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class MainController extends GetxController {
-  RxString blokAdi = ''.obs;
+  RxString blokAdiRx = ''.obs;
   RxInt pageObs = 0.obs;
-  RxInt ilkDN = 0.obs;
-  RxInt sonDN = 0.obs;
+  //gerek yok
+  // RxInt ilkDN = 0.obs;
+  // RxInt sonDN = 0.obs;
   RxList<Daire> daireler = <Daire>[].obs;
   RxList<Birey> bireyler = <Birey>[].obs;
-  Box box = Hive.box(Constants.boxBlok);
 
-  void setBlok(String blokAdi, int ilkDN, int sonDN) {
-    this.blokAdi = blokAdi.obs;
-    this.ilkDN = ilkDN.obs;
-    this.sonDN = sonDN.obs;
+  var box = Hive.box(Constants.boxBlok);
 
-    Hive.box(Constants.boxBlok)
-        .putAll({'blok': blokAdi, 'ilkDN': ilkDN, 'sonDN': sonDN});
+  Future<void> setBlok(String newBlokAdi) async {
+    blokAdiRx.value = newBlokAdi;
+    // this.ilkDN = ilkDN.obs;
+    // this.sonDN = sonDN.obs;
+    if (!box.isOpen) {
+      await Hive.openBox(Constants.boxBlok);
+    }
+    box.put('blok', newBlokAdi);
   }
 
-  void loadBlok() {
-    var box = Hive.box(Constants.boxBlok);
+  Future<void> loadBlok() async {
+    blokAdiRx.value = box.get('blok', defaultValue: 'Blok tanımlı değil');
 
-    blokAdi = RxString(box.get('blok', defaultValue: 'Blok tanımlı değil'));
-
-    ilkDN = RxInt(box.get('ilkDN', defaultValue: 0));
-    sonDN = RxInt(box.get('sonDN', defaultValue: 0));
-    daireler = box.values.whereType<Daire>().toList().obs;
-    bireyler = box.values.whereType<Birey>().toList().obs;
+    // ilkDN = RxInt(box.get('ilkDN', defaultValue: 0));
+    // sonDN = RxInt(box.get('sonDN', defaultValue: 0));
+    daireler.value = box.values.whereType<Daire>().toList();
+    bireyler.value = box.values.whereType<Birey>().toList();
   }
 
   void addHouse(Daire daire) {
     daireler.add(daire);
-    daire.addDaire(
+    daire.addFlat(
         daire); //TODO: kendi kendini gönderiyor. doğru yöntem bu mu emin değilim.
   }
 
@@ -91,6 +91,12 @@ class MainController extends GetxController {
   int livingInFlat(int flatNo) =>
       bireyler.where((p0) => p0.daire == flatNo).length;
 
+  int safePersonInFlat(int flatNo) => bireyler
+      .where((p0) => p0.daire == flatNo)
+      .where((element) =>
+          element.durum == "Mevcut" || element.durum == "Farklı Lokasyonda")
+      .length;
+
   void chageSatus(int key, String newDurum) {
     bireyler.firstWhere((element) => element.key == key).durum = newDurum;
     bireyler.refresh();
@@ -102,4 +108,16 @@ class MainController extends GetxController {
 
   String getStatus(int key) =>
       bireyler.firstWhere((element) => element.key == key).durum;
+
+  Future<void> removeBox() async {
+    var isBox = await Hive.boxExists(Constants.boxBlok);
+    bool isOpen = box.isOpen;
+
+    if (isBox && isOpen) {
+      await box.clear();
+
+      //var newBox = Hive.openBox('new');
+      loadBlok();
+    }
+  }
 }

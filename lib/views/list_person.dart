@@ -6,67 +6,71 @@ import 'add_person.dart';
 import 'edit_person.dart';
 
 class PersonList extends StatelessWidget {
-  late Birey birey;
+  // late Birey birey;
+
+  final MainController mcont = Get.find();
+  PersonList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    MainController mcont = Get.find();
-
     List<Birey> bireyler = mcont.bireyler;
 
-    return Column(children: [
-      Expanded(
-        flex: 13,
-        child: bireyler.isEmpty
-            ? const Center(child: Text('Kişi yok.'))
-            : Obx(
-                () => ListView.separated(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: bireyler.length,
-                  itemBuilder: (context, index) {
-                    birey = bireyler[index];
-                    return Expanded(
-                      child: Card(
-                        color: Colors.blue[50],
-                        child: Row(children: [
-                          Expanded(
-                            flex: 6,
-                            child: ListTile(
-                              title: Text(
-                                  'Daire : ${birey.daire.toString()} || ${birey.adi} ${birey.soyadi}'),
+    return Center(
+      child: Column(
+        children: [
+          Obx(
+            () => Expanded(
+              child: bireyler.isEmpty
+                  ? const Center(child: Text('Kayıt yok.'))
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.separated(
+                        itemCount: bireyler.length,
+                        itemBuilder: (context, index) {
+                          return Expanded(
+                            child: Card(
+                              color: Colors.blue[50],
+                              child: Row(children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: ListTile(
+                                    title: Text('Daire : '
+                                        '${bireyler[index].daire.toString()} || '
+                                        '${bireyler[index].adi} '
+                                        '${bireyler[index].soyadi}'),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                      onPressed: () => Get.to(
+                                          EditPerson(birey: bireyler[index])),
+                                      icon: const Icon(Icons.edit)),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                      onPressed: () => deletePersonDialog(bireyler[
+                                          index]), // deleteAlert(bireyler[index]),
+                                      icon: const Icon(Icons.delete)),
+                                )
+                              ]),
                             ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: IconButton(
-                                onPressed: () =>
-                                    Get.to(EditPerson(birey: bireyler[index])),
-                                icon: const Icon(Icons.edit)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: IconButton(
-                                onPressed: () => deletePersonDialog(
-                                    birey), // deleteAlert(bireyler[index]),
-                                icon: const Icon(Icons.delete)),
-                          )
-                        ]),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
-                ),
-              ),
+                    ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Get.to(const AddPerson()),
+            child: const Text('Ekle'),
+          ),
+        ],
       ),
-      Expanded(
-        flex: 1,
-        child: ElevatedButton(
-          onPressed: () => Get.to(const AddPerson()),
-          child: const Text('Ekle'),
-        ),
-      ),
-    ]);
+    );
   }
 
   void deletePersonDialog(Birey birey) {
@@ -77,8 +81,6 @@ class PersonList extends StatelessWidget {
         actions: [
           ElevatedButton(
               onPressed: () {
-                MainController mcont = Get.find();
-
                 mcont.delPerson(birey);
                 Get.back();
               },

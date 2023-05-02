@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'edit_house.dart';
 
-class HouseList extends StatelessWidget {
-  const HouseList({super.key});
+class FlatsList extends StatelessWidget {
+  FlatsList({super.key});
+
+  final MainController mcont = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    MainController mcont = Get.find();
-
     return Center(
       child: Column(
         children: [
           Obx(
             () => Expanded(
               child: mcont.daireler.isEmpty
-                  ? const Text('Kayıt yok.')
+                  ? const Center(child: Text('Kayıt yok.'))
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView.builder(
@@ -64,7 +64,10 @@ class HouseList extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () => Get.to(const AddHouse()),
+            onPressed: () => mcont.blokAdiRx == 'Blok tanımlı değil'
+                ? Get.snackbar('Bilgi',
+                    'Daire eklemeye başlamadan önce Tanımlar sayfasından blok tanımlamalısınız.')
+                : Get.to(const AddHouse()),
             child: const Text('Ekle'),
           )
         ],
@@ -80,7 +83,6 @@ class HouseList extends StatelessWidget {
         actions: [
           ElevatedButton(
               onPressed: () {
-                MainController mcont = Get.find();
                 mcont.delHouse(daire);
                 Get.back();
               },

@@ -1,6 +1,5 @@
 import 'package:blok_yonetim/blok.dart';
 import 'package:blok_yonetim/main.dart';
-import 'package:blok_yonetim/views/list_person.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../main_controller.dart';
@@ -109,7 +108,7 @@ class _EditPersonState extends State<EditPerson> {
                         //widget.birey.editPerson(widget.birey);
                         mcont.savePerson(widget.birey);
                         Get.to(
-                            MyApp()); //TODO: back arkadaki listeyi değiştirmedinden to ile gittim ama addperson açık kalıyor sanırım.
+                            const MyApp()); //TODO: back arkadaki listeyi değiştirmedinden to ile gittim ama addperson açık kalıyor sanırım.
                         // Get.back(result: mcont);
                       } else {
                         Get.snackbar('Hata', 'Eksik bilgileri tamamlamalısınız',
