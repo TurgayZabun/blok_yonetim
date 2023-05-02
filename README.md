@@ -1,16 +1,19 @@
 # blok_yonetim
 
-A new Flutter project.
+İlk uygulamam. Flutter ile Hive ve GetX paketleri kullanarak gelirdim.
 
-## Getting Started
+## Amaç
 
-This project is a starting point for a Flutter application.
+Blok yöneticisi ya da blok temsilcisinin afet durumlarında toplanma alanında apartmandaki kişilerin yoklamasını alarak haber alınamayan, kiritik durumdaki kişilerin durumlarını hızlıca tespit etmek.
 
-A few resources to get you started if this is your first Flutter project:
+## Kullanım
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+4 safya tanımlandı.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1 Katları, daireleri, dairede oturan kişi sayısını ve yoklama güvende olarak belirlenen kişi sayısını gösteirir. Yoklamada ilgili daire seçilerek dairedeki kişilerin durumları belirlenir.
+
+2 Aparmandaki dairelerin listesi, daire ekleme-çıkarma-düzenleme.
+
+3 Aparmandaki kişilerin listesi, kişi ekleme-çıkarma-düzenleme.
+
+4 Küçük bir bilgilendirme (tanımlama yapılmamış ise) Apartman ismi tanımlama-verileri sıfırlama.
